@@ -34,7 +34,7 @@ class QueryBase:
         self.model = model
 
     def get_ref(self):
-        return db.conn.collection(self.model._meta.collection_name)
+        return db.collection(self.model._meta.collection_name)
 
 
 class FilterQuery(QueryBase):
