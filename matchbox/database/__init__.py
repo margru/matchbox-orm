@@ -1,5 +1,4 @@
-import firebase_admin
-from firebase_admin import firestore
+from google.cloud import firestore
 
 from matchbox.database import error
 
@@ -13,14 +12,15 @@ class Database:
         self._database = None
         self._root_path = None
 
-    def initialization(self, cert_path, project=None, database=_DEFAULT_DATABASE, root_path=None):
-        try:
-            firebase_admin.get_app()
-        except ValueError:
-            cred = firebase_admin.credentials.Certificate(cert_path)
-            firebase_admin.initialize_app(cred)
+    def initialization(self, cert_path, project=None, database=None, root_path=None):
 
-        self._conn = firestore.client(project=project, database=database)
+        kwargs = {}
+        if project is not None:
+            kwargs["project"] = project
+        if database is not None:
+            kwargs["database"] = database
+        self._conn = firestore.Client.from_service_account_json(cert_path, **kwargs)
+
         self._project = project
         self._database = database
         self._root_path = root_path.strip("/")

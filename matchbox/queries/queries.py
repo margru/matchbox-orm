@@ -1,4 +1,4 @@
-from firebase_admin import firestore
+from google.cloud import firestore
 
 from matchbox.database import db
 from matchbox.queries import error

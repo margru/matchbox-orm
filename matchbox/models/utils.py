@@ -1,9 +1,7 @@
 import re
 import uuid
 import iso8601
-import google
-
-from firebase_admin import firestore
+from google.cloud import firestore
 
 from matchbox import database
 
@@ -33,7 +31,7 @@ def get_reference_fields(collection, value, db=None):
     if db is None:
         db = database.db
 
-    return google.cloud.firestore_v1.document.DocumentReference(
+    return firestore.DocumentReference(
         collection,
         value,
         client=db.conn

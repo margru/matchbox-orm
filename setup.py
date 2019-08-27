@@ -25,5 +25,5 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    install_requires=['firebase-admin>=2.16.0', 'iso8601>=0.1.12'],
+    install_requires=['google-cloud-firestore==1.4.0', 'iso8601>=0.1.12'],
 )
