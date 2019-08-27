@@ -23,6 +23,10 @@ def generate_id():
     return uuid.uuid4().hex
 
 
+def generate_uuid():
+    return uuid.uuid4()
+
+
 def google_datetime_to_datetime(gfd):
     return iso8601.parse_date(gfd.isoformat())
 

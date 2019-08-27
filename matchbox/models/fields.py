@@ -116,7 +116,7 @@ class TimeStampField(Field):
         return value
 
     def python_value(self, value):
-        return models_utils.google_datetime_to_datetime(value)
+        return models_utils.google_datetime_to_datetime(value) if value is not None else None
 
 
 class BooleanField(Field):

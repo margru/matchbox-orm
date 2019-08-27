@@ -37,11 +37,10 @@ class Database:
     def root_path(self):
         return self._root_path
 
-    @property
     def collection(self, name):
         if self.root_path:
-            name = "/".join(self._root_path, name.strip("/"))
-        self.conn.collection(name)
+            name = "/".join([self._root_path, name.strip("/")])
+        return self.conn.collection(name)
 
 
 db = Database()
