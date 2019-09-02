@@ -84,6 +84,25 @@ class IntegerField(Field):
             return int(value)
 
 
+class FloatField(Field):
+    allowed_attributes = ['blank', 'default']
+
+    def db_value(self, value):
+        try:
+            return float(value)
+        except ValueError:
+            raise error.DBTypeError(
+                '{} required value type {}, get {}'.format(
+                    self.__class__.__name__,
+                    float,
+                    type(value)
+                ))
+
+    def python_value(self, value):
+        if value is not None:
+            return float(value)
+
+
 class TextField(Field):
     allowed_attributes = ['blank', 'default', 'max_length']
 
