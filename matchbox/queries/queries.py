@@ -33,8 +33,10 @@ class QueryBase:
     def __init__(self, model):
         self.model = model
 
-    def get_ref(self):
-        return db.collection(self.model._meta.collection_name)
+    def get_ref(self, req_db=None):
+        if req_db is None:
+            req_db = db
+        return req_db.collection(self.model._meta.collection_name)
 
 
 class FilterQuery(QueryBase):
@@ -143,9 +145,9 @@ class InsertQuery(QueryBase):
         super().__init__(model)
         self.insert_query = kwargs
 
-    def get_ref(self, id=None):
+    def get_ref(self, id=None, req_db=None):
 
-        return super().get_ref().document(id)
+        return super().get_ref(req_db=req_db).document(id)
 
     def parse_insert(self):
         out = {}
@@ -154,15 +156,15 @@ class InsertQuery(QueryBase):
             out[f.db_column_name] = f.lookup_value(None, val)
         return out
 
-    def raw_execute(self):
+    def raw_execute(self, req_db=None):
         kwargs = self.parse_insert()
-        ref = self.get_ref(kwargs.get('id'))
+        ref = self.get_ref(kwargs.get('id'), req_db=req_db)
         kwargs['id'] = ref.id
         ref.set(kwargs)
         return self.model(**kwargs)
 
-    def execute(self):
-        return self.raw_execute()
+    def execute(self, req_db=None):
+        return self.raw_execute(req_db=req_db)
 
 
 class UpdateQuery(InsertQuery):

@@ -125,11 +125,13 @@ class Model(metaclass=BaseModel):
             for f in self._meta.fields.values()
         }
 
-    def save(self, update_fields=None):
+    def save(self, update_fields=None, req_db=None):
         if update_fields is not None:
+            if req_db is not None:
+                raise RuntimeError("Cannot update model within database different from the origin")
             self._update(update_fields)
         else:
-            self._save()
+            self._save(req_db=req_db)
 
     def delete(self):
         queries.FilterQuery(
@@ -146,11 +148,11 @@ class Model(metaclass=BaseModel):
             )
         ).execute()
 
-    def _save(self):
+    def _save(self, req_db=None):
         self.id = queries.InsertQuery(
             self.__class__,
             **self.get_fields()
-        ).execute().id
+        ).execute(req_db=req_db).id
 
     def _get_update_fields(self, update_fields):
         if type(update_fields) not in [list, tuple]:
