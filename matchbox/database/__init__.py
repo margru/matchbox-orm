@@ -12,6 +12,10 @@ class Database:
         self._database = None
         self._root_path = None
 
+    # Required scopes:
+    # LINK: https://googleapis.dev/python/firestore/latest/client.html#google.cloud.firestore_v1.client.Client.SCOPE
+    #  - https://www.googleapis.com/auth/cloud-platform
+    #  - https://www.googleapis.com/auth/datastore
     def initialization(self, cert_path, project=None, database=None, root_path=None):
 
         kwargs = {}
