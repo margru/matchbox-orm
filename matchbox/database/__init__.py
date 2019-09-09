@@ -27,7 +27,7 @@ class Database:
 
         self._project = project
         self._database = database
-        self._root_path = root_path.strip("/")
+        self._root_path = root_path.strip("/") if root_path is not None else ""
 
     @property
     def conn(self):
